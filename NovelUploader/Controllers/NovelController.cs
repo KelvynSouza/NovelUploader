@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NovelUploader.Models;
+using NovelUploader.Service;
 
 namespace NovelUploader.Controllers
 {
@@ -22,14 +23,14 @@ namespace NovelUploader.Controllers
 
         // GET: api/Novel
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NovelModel>>> GetNovels()
+        public async Task<ActionResult<IEnumerable<Novel>>> GetNovels()
         {
             return await _context.Novels.ToListAsync();
         }
 
         // GET: api/Novel/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<NovelModel>> GetNovelModel(int id)
+        public async Task<ActionResult<Novel>> GetNovelModel(int id)
         {
             var novelModel = await _context.Novels.FindAsync(id);
 
@@ -41,11 +42,9 @@ namespace NovelUploader.Controllers
             return novelModel;
         }
 
-        // PUT: api/Novel/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // PUT: api/Novel/5        
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNovelModel(int id, NovelModel novelModel)
+        public async Task<IActionResult> PutNovelModel(int id, Novel novelModel)
         {
             if (id != novelModel.Id)
             {
@@ -73,11 +72,9 @@ namespace NovelUploader.Controllers
             return NoContent();
         }
 
-        // POST: api/Novel
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // POST: api/Novel        
         [HttpPost]
-        public async Task<ActionResult<NovelModel>> PostNovelModel(NovelModel novelModel)
+        public async Task<ActionResult<Novel>> PostNovelModel(Novel novelModel)
         {
             _context.Novels.Add(novelModel);
             await _context.SaveChangesAsync();
@@ -87,7 +84,7 @@ namespace NovelUploader.Controllers
 
         // DELETE: api/Novel/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<NovelModel>> DeleteNovelModel(int id)
+        public async Task<ActionResult<Novel>> DeleteNovelModel(int id)
         {
             var novelModel = await _context.Novels.FindAsync(id);
             if (novelModel == null)
@@ -99,6 +96,17 @@ namespace NovelUploader.Controllers
             await _context.SaveChangesAsync();
 
             return novelModel;
+        }
+
+        
+        [HttpPost]
+        [Route("FillDatabase")]
+        public async Task<ActionResult<Novel>> PostFillNovelDatabase([FromBody]string filepath)
+        {
+            await new NovelParserService().Run(filepath);
+
+            return CreatedAtAction("GetNovelModel", new { path = filepath });
+
         }
 
         private bool NovelModelExists(int id)

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NovelUploader.Models
 {
-    public class NovelModel
+    public class Novel
     {
         public int Id { get; set; }
         public int CapNumber { get; set; }

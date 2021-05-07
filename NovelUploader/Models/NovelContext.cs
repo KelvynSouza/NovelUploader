@@ -10,10 +10,10 @@ namespace NovelUploader.Models
 
         public NovelContext(DbContextOptions<NovelContext> options) : base(options)
         {  }
-        public DbSet<NovelModel> Novels { get; set; }
+        public DbSet<Novel> Novels { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<NovelModel>().HasKey(m => m.Id);
+            builder.Entity<Novel>().HasKey(m => m.Id);
             base.OnModelCreating(builder);
         }
     }

@@ -4,16 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Database\Novels.db" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Database\Novels.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
   
 
   

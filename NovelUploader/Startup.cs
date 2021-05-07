@@ -28,12 +28,16 @@ namespace NovelUploader
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration["ConexaoSqlite:SqliteConnectionString"];
+
+            connection = connection.Replace("{CurrentDirectory}", AppDomain.CurrentDomain.BaseDirectory);
+
             services.AddDbContext<NovelContext>(options =>
                 options.UseSqlite(connection)
             );
             // Add framework services.
             services.AddMvc();
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +51,7 @@ namespace NovelUploader
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
 
             app.UseAuthorization();
 
