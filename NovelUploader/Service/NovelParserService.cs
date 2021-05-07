@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NovelUploader.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,30 +13,57 @@ namespace NovelUploader.Service
     {
         public async Task<bool> Run(string path)
         {
-            string novel;
+
+            var novel = await ReadNovelFile(path);
+
+            var chapters = GetChaptersParsed(novel);
+            
+
+
+
+            return true;
+        }
+
+        private async Task<string> ReadNovelFile(string path)
+        {
             try
             {
+
+                string novel;
                 using (var sr = new StreamReader(path, Encoding.UTF8))
                 {
                     novel = await sr.ReadToEndAsync();
                 }
-                string pattern = @"^<.*\s\S*[^>]*> 끝$";
-
-                // Regex rx = new Regex(pattern, RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                Regex rx = new Regex(pattern, RegexOptions.Multiline, TimeSpan.FromHours(1));
-                
-
-                var matches = rx.Matches(novel);
-
-                var array = matches.Count;
-
+                return novel;
             }
             catch (FileNotFoundException)
             {
-                return false;
+                return null;
             }
+        }
 
-            return true;
+        private IEnumerable<string> GetChaptersParsed(string novel)
+        {
+            string pattern = @"^<.*\s\S*[^>]*> 끝";
+            Regex rx = new Regex(pattern,
+                RegexOptions.Compiled |
+                RegexOptions.Multiline |
+                RegexOptions.IgnoreCase |
+                RegexOptions.CultureInvariant,
+                TimeSpan.FromMinutes(5));
+
+            var matches = rx.Matches(novel);
+
+            var chapters = new List<string>();
+            foreach (Match match in matches)
+                chapters.Add(match.Value);
+
+            return chapters;
+        }
+
+        private IEnumerable<Novel> ChapterToNovelModel(IEnumerable<string> chapters)
+        {
+
         }
     }
 }
