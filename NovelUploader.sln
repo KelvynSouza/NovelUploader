@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NovelUploader", "NovelUploader\NovelUploader.csproj", "{25A0B9A3-3720-417C-85B1-C77433A4543D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NovelUploader.Test", "NovelUploader.Test\NovelUploader.Test.csproj", "{1DEBDDFD-AC33-4EFC-9F24-AC52E7562DCE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25A0B9A3-3720-417C-85B1-C77433A4543D} = {25A0B9A3-3720-417C-85B1-C77433A4543D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{25A0B9A3-3720-417C-85B1-C77433A4543D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25A0B9A3-3720-417C-85B1-C77433A4543D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25A0B9A3-3720-417C-85B1-C77433A4543D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25A0B9A3-3720-417C-85B1-C77433A4543D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DEBDDFD-AC33-4EFC-9F24-AC52E7562DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DEBDDFD-AC33-4EFC-9F24-AC52E7562DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DEBDDFD-AC33-4EFC-9F24-AC52E7562DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DEBDDFD-AC33-4EFC-9F24-AC52E7562DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB6C1232-EEFF-4F4D-A650-609EE14837E5}
+	EndGlobalSection
+EndGlobal
