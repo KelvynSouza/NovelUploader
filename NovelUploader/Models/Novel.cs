@@ -8,7 +8,7 @@ namespace NovelUploader.Models
     public class Novel
     {
         public int Id { get; set; }
-        public int CapNumber { get; set; }
+        public int ChapNumber { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
     }

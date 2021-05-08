@@ -29,13 +29,13 @@ namespace NovelUploader.Controllers
         public async Task<ActionResult<List<NovelTitlesDTO>>> GetNovelTitles()
         {
             var novels = await _context.Novels.ToListAsync();
-            var orderedlist = novels.OrderBy(_ => _.CapNumber);
+            var orderedlist = novels.OrderBy(_ => _.ChapNumber);
             var titles = new List<NovelTitlesDTO>();
             foreach (var chapter in orderedlist)
             {
                 titles.Add(new NovelTitlesDTO()
                 {
-                    ChapterNumber = chapter.CapNumber,
+                    ChapterNumber = chapter.ChapNumber,
                     Title = chapter.Title
                 });
             }
@@ -47,7 +47,7 @@ namespace NovelUploader.Controllers
         [HttpGet("{chapter}")]
         public async Task<ActionResult<Novel>> GetNovelChapter(int chapter)
         {
-            var novelModel = await _context.Novels.FirstOrDefaultAsync(_ => _.CapNumber == chapter);
+            var novelModel = await _context.Novels.FirstOrDefaultAsync(_ => _.ChapNumber == chapter);
 
             if (novelModel == null)
             {

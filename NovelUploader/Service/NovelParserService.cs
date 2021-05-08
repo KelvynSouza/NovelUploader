@@ -78,7 +78,7 @@ namespace NovelUploader.Service
 
                 var novel = new Novel()
                 {
-                    CapNumber = num,
+                    ChapNumber = num,
                     Text = chapter,
                     Title = title.Value
                 };

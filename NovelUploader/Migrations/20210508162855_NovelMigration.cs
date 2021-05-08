@@ -12,7 +12,7 @@ namespace NovelUploader.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CapNumber = table.Column<int>(nullable: false),
+                    ChapNumber = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true)
                 },

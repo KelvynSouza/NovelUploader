@@ -15,13 +15,13 @@ namespace NovelUploader.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.14");
 
-            modelBuilder.Entity("NovelUploader.Models.NovelModel", b =>
+            modelBuilder.Entity("NovelUploader.Models.Novel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CapNumber")
+                    b.Property<int>("ChapNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")

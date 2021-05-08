@@ -8,7 +8,7 @@ using NovelUploader.Models;
 namespace NovelUploader.Migrations
 {
     [DbContext(typeof(NovelContext))]
-    [Migration("20210507021311_NovelMigration")]
+    [Migration("20210508162855_NovelMigration")]
     partial class NovelMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,13 +17,13 @@ namespace NovelUploader.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.14");
 
-            modelBuilder.Entity("NovelUploader.Models.NovelModel", b =>
+            modelBuilder.Entity("NovelUploader.Models.Novel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CapNumber")
+                    b.Property<int>("ChapNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
