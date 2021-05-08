@@ -120,7 +120,7 @@ namespace NovelUploader.Controllers
             
             await ClearTable();
 
-            var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources/EndingMker.txt";
+            var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources/EndingMaker.txt";
 
             Console.WriteLine(filepath);
 
