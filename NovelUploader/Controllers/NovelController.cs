@@ -119,7 +119,9 @@ namespace NovelUploader.Controllers
         {
             await ClearTable();
 
-            var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources\\EndingMaker(Complete+Epilogue).txt";
+            var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources\\EndingMaker.txt";
+
+            Console.WriteLine(filepath);
 
             var novelsToAdd = await new NovelParserService().Run(filepath);
 
