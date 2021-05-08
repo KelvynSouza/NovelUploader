@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,15 +29,16 @@ namespace NovelUploader.Controllers
         public async Task<ActionResult<List<NovelTitlesDTO>>> GetNovelTitles()
         {
             var novels = await _context.Novels.ToListAsync();
+            var orderedlist = novels.OrderBy(_ => _.CapNumber);
             var titles = new List<NovelTitlesDTO>();
-            novels.ForEach(_ =>
+            foreach (var chapter in orderedlist)
             {
                 titles.Add(new NovelTitlesDTO()
                 {
-                    ChapterNumber = _.CapNumber,
-                    Title = _.Title
+                    ChapterNumber = chapter.CapNumber,
+                    Title = chapter.Title
                 });
-            });
+            }
 
             return titles;
         }
@@ -44,7 +47,7 @@ namespace NovelUploader.Controllers
         [HttpGet("{chapter}")]
         public async Task<ActionResult<Novel>> GetNovelChapter(int chapter)
         {
-            var novelModel = await _context.Novels.FirstOrDefaultAsync(_=>_.CapNumber == chapter);
+            var novelModel = await _context.Novels.FirstOrDefaultAsync(_ => _.CapNumber == chapter);
 
             if (novelModel == null)
             {
@@ -110,25 +113,72 @@ namespace NovelUploader.Controllers
             return novelModel;
         }
 
-        
         [HttpPost]
         [Route("FillDatabase")]
-        public async Task<ActionResult<IEnumerable<Novel>>> PostFillNovelDatabase([FromBody]string filepath)
+        public async Task<ActionResult<IEnumerable<Novel>>> PostFillNovelDatabase([FromBody] string filepath)
         {
-            var novelList = await new NovelParserService().Run(filepath);            
+            await ClearTable();
 
-            await _context.Novels.AddRangeAsync(novelList);
+            var novelsToAdd = await new NovelParserService().Run(filepath);
+
+            await _context.Novels.AddRangeAsync(novelsToAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetNovelModel", novelList);
+            return CreatedAtAction("GetNovelTitles", novelsToAdd);
 
         }
 
+        [HttpPost("FillDatabaseFile")]
+        public async Task<ActionResult> PostUpload([FromForm] IFormFile file)
+        {
+            await ClearTable(); 
 
+            IEnumerable<Novel> novels;
+
+            if (file.Length > 0)
+            {
+                try
+                {
+                    var filePath = Path.GetTempFileName();
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    novels = await new NovelParserService().Run(filePath);
+
+                    await _context.Novels.AddRangeAsync(novels);
+                    await _context.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            return Ok(new { Message = "Arquivo carregado e banco preenchido com sucesso.", Novels = novels });
+        }
+
+        #region Private Methods
 
         private bool NovelModelExists(int id)
         {
             return _context.Novels.Any(e => e.Id == id);
         }
+
+        private async Task ClearTable()
+        {
+            var novelsToRemove = await _context.Novels.ToListAsync();
+
+            _context.Novels.RemoveRange(novelsToRemove);
+            await _context.SaveChangesAsync();
+        }
+        #endregion
     }
 }
