@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\EndingMaker(Complete+Epilogue).txt" />
+    <None Remove="Resources\EndingMaker.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\EndingMaker%28Complete+Epilogue%29.txt">
+    <Content Include="Resources\EndingMaker.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
