@@ -22,7 +22,6 @@
   
 <Target Name="PrePublishTarget" AfterTargets="Publish">
   <Exec Command="dotnet tool install --global dotnet-ef --version 3.1.14" />
-  <Exec Command="dotnet ef database update" />
 </Target>
  
 
