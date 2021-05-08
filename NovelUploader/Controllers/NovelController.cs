@@ -121,6 +121,8 @@ namespace NovelUploader.Controllers
 
             var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources\\EndingMaker.txt";
 
+            Console.WriteLine(filepath);
+
             var novelsToAdd = await new NovelParserService().Run(filepath);
 
             await _context.Novels.AddRangeAsync(novelsToAdd);
