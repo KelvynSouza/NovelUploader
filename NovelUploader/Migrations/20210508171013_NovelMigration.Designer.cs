@@ -8,7 +8,7 @@ using NovelUploader.Models;
 namespace NovelUploader.Migrations
 {
     [DbContext(typeof(NovelContext))]
-    [Migration("20210508162855_NovelMigration")]
+    [Migration("20210508171013_NovelMigration")]
     partial class NovelMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
