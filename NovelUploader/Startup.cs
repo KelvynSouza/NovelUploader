@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NovelUploader.Middleware;
 using NovelUploader.Models;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,14 @@ namespace NovelUploader
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            
+
+            app.UseOptions();
+
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()                       
+                       );
 
             app.UseAuthorization();
 
