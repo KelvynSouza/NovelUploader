@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NovelUploader.DTO;
 using NovelUploader.Models;
 using NovelUploader.Service;
 
@@ -23,16 +24,27 @@ namespace NovelUploader.Controllers
 
         // GET: api/Novel
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Novel>>> GetNovels()
+        public async Task<ActionResult<List<NovelTitlesDTO>>> GetNovelTitles()
         {
-            return await _context.Novels.ToListAsync();
+            var novels = await _context.Novels.ToListAsync();
+            var titles = new List<NovelTitlesDTO>();
+            novels.ForEach(_ =>
+            {
+                titles.Add(new NovelTitlesDTO()
+                {
+                    ChapterNumber = _.CapNumber,
+                    Title = _.Title
+                });
+            });
+
+            return titles;
         }
 
         // GET: api/Novel/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Novel>> GetNovelModel(int id)
+        [HttpGet("{chapter}")]
+        public async Task<ActionResult<Novel>> GetNovelChapter(int chapter)
         {
-            var novelModel = await _context.Novels.FindAsync(id);
+            var novelModel = await _context.Novels.FirstOrDefaultAsync(_=>_.CapNumber == chapter);
 
             if (novelModel == null)
             {
@@ -101,13 +113,18 @@ namespace NovelUploader.Controllers
         
         [HttpPost]
         [Route("FillDatabase")]
-        public async Task<ActionResult<Novel>> PostFillNovelDatabase([FromBody]string filepath)
+        public async Task<ActionResult<IEnumerable<Novel>>> PostFillNovelDatabase([FromBody]string filepath)
         {
-            await new NovelParserService().Run(filepath);
+            var novelList = await new NovelParserService().Run(filepath);            
 
-            return CreatedAtAction("GetNovelModel", new { path = filepath });
+            await _context.Novels.AddRangeAsync(novelList);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetNovelModel", novelList);
 
         }
+
+
 
         private bool NovelModelExists(int id)
         {

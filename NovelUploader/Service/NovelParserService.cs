@@ -11,17 +11,16 @@ namespace NovelUploader.Service
 {
     public class NovelParserService
     {
-        public async Task<bool> Run(string path)
+        public async Task<IEnumerable<Novel>> Run(string path)
         {
 
             var novel = await ReadNovelFile(path);
 
             var chapters = GetChaptersParsed(novel);
-            
 
+            var novellist = ChapterToNovelModel(chapters);
 
-
-            return true;
+            return novellist;
         }
 
         private async Task<string> ReadNovelFile(string path)
@@ -63,7 +62,31 @@ namespace NovelUploader.Service
 
         private IEnumerable<Novel> ChapterToNovelModel(IEnumerable<string> chapters)
         {
+            string pattern = @"^<.*\s\S*>";
+            Regex rx = new Regex(pattern,
+                RegexOptions.Compiled |
+                RegexOptions.Multiline |
+                RegexOptions.IgnoreCase |
+                RegexOptions.CultureInvariant,
+                TimeSpan.FromMinutes(5));
 
+            List<Novel> novelList = new List<Novel>();
+            int num = 1;
+            foreach (var chapter in chapters)
+            {
+                var title = rx.Match(chapter);
+
+                var novel = new Novel()
+                {
+                    CapNumber = num,
+                    Text = chapter,
+                    Title = title.Value
+                };
+
+                novelList.Add(novel);
+                num++;
+            }
+            return novelList;
         }
     }
 }
