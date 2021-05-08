@@ -115,9 +115,11 @@ namespace NovelUploader.Controllers
 
         [HttpPost]
         [Route("FillDatabase")]
-        public async Task<ActionResult<IEnumerable<Novel>>> PostFillNovelDatabase([FromBody] string filepath)
+        public async Task<ActionResult<IEnumerable<Novel>>> PostFillNovelDatabase()
         {
             await ClearTable();
+
+            var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources\\EndingMaker(Complete+Epilogue).txt";
 
             var novelsToAdd = await new NovelParserService().Run(filepath);
 
