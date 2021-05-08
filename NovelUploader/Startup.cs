@@ -47,6 +47,7 @@ namespace NovelUploader
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseExceptionHandler("/error");
 
             app.UseHttpsRedirection();
 

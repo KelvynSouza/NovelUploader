@@ -25,20 +25,14 @@ namespace NovelUploader.Service
 
         private async Task<string> ReadNovelFile(string path)
         {
-            try
-            {
 
-                string novel;
-                using (var sr = new StreamReader(path, Encoding.UTF8))
-                {
-                    novel = await sr.ReadToEndAsync();
-                }
-                return novel;
-            }
-            catch (FileNotFoundException)
+            string novel;
+            using (var sr = new StreamReader(path, Encoding.UTF8))
             {
-                return null;
+                novel = await sr.ReadToEndAsync();
             }
+            return novel;
+
         }
 
         private IEnumerable<string> GetChaptersParsed(string novel)

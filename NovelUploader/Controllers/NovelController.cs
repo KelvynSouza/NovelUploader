@@ -117,9 +117,10 @@ namespace NovelUploader.Controllers
         [Route("FillDatabase")]
         public async Task<ActionResult<IEnumerable<Novel>>> PostFillNovelDatabase()
         {
+            
             await ClearTable();
 
-            var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources\\EndingMaker.txt";
+            var filepath = AppDomain.CurrentDomain.BaseDirectory + "Resources/EndingMaker.txt";
 
             Console.WriteLine(filepath);
 
@@ -129,13 +130,14 @@ namespace NovelUploader.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetNovelTitles", novelsToAdd);
+            
 
         }
 
         [HttpPost("FillDatabaseFile")]
         public async Task<ActionResult> PostUpload([FromForm] IFormFile file)
         {
-            await ClearTable(); 
+            await ClearTable();
 
             IEnumerable<Novel> novels;
 
